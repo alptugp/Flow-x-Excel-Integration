@@ -1,23 +1,14 @@
-from concurrent.futures import thread
-import threading
 import webbrowser
 from msal import ConfidentialClientApplication, PublicClientApplication
-from bottle import route, run, template, request
 
-def start_server():
-    @route('/')
-    def index():
-        return template('url data: {{code}}',code=request.query.code)
-
-    run(host='localhost', port=8080)
-
-threading.Thread(target=start_server).start()
-
-client_secret = 'bNx8Q~7bbxD.NjBlsxDIWw-0QMzNlPCki2HgQaCN'
-app_id = '6668cc5d-23c5-44c6-b4d4-7f0059902679'
+app_id = 'a62b7597-8acf-43ea-97a4-38d2b1173c5b'
 SCOPES = ['User.Read']
 
-client = ConfidentialClientApplication(client_id=app_id, client_credential=client_secret)
-authorization_url = client.get_authorization_request_url(SCOPES)
-print(authorization_url)
-webbrowser.open(authorization_url)
+client = PublicClientApplication(client_id=app_id)
+
+flow = client.initiate_device_flow(scopes=SCOPES)
+print('user_code: ' + flow['user_code'])
+webbrowser.open(flow['verification_uri'])
+
+token_response = client.acquire_token_by_device_flow(flow)
+print(token_response)
