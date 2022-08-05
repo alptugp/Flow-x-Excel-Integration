@@ -30,7 +30,7 @@ def generate_access_token(app_id, scopes):
     else:
         # authetnicate your accoutn as usual
         flow = client.initiate_device_flow(scopes=scopes)
-        # print('user_code: ' + flow['user_code'])
+        print('user_code: ' + flow['user_code'])
         webbrowser.open('https://microsoft.com/devicelogin')
         token_response = client.acquire_token_by_device_flow(flow)
 
