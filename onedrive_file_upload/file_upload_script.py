@@ -22,3 +22,4 @@ response = requests.put(
     data=media_content
 )
 print(response.json())
+
